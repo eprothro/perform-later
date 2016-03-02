@@ -16,9 +16,10 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-require 'cassie'
-require 'byebug'
+require 'cassie-rails'
 require 'cassie/testing'
+require 'pry-rails'
+require 'byebug'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate

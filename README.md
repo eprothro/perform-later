@@ -27,7 +27,7 @@ Cassie provies database connection configuration (e.g. cluster and session) per 
 Similar to how `config/database.yml` stores your relational databse configuration, `config/cassandra.yml` stores your cassandra database configuration.
 
 ```
-rails g cassandra_configuration
+rails g cassandra:config
 ```
 
 This will create `config/cassandra.yml` with default settings.

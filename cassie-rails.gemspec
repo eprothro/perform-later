@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'cassie-rails'
-  s.version     = '1.0.0.alpha.1'
+  s.version     = '1.0.0.alpha.3'
   s.summary     = "Rails Integration for Apache Cassandra application support"
   s.description = <<-EOS.strip.gsub(/\s+/, ' ')
     cassie-rails provides database configration, versioned migrations,
@@ -18,7 +18,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'rails', '>= 3.2'
 
   s.add_development_dependency 'rspec', '~> 3.4'
+  s.add_development_dependency 'generator_spec', '~> 0.9'
   s.add_development_dependency 'byebug', '>= 0'
-  s.add_development_dependency 'pry', '>= 0'
+  s.add_development_dependency 'pry-rails', '>= 0'
   s.add_development_dependency 'benchmark-ips', '>= 0'
 end
