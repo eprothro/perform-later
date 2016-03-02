@@ -1,0 +1,1 @@
+require 'cassie-rails/railtie' if defined?(Rails)
