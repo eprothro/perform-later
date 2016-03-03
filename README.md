@@ -2,12 +2,7 @@
 
 This project is in alpha. We're iterating to provide important features in a lightweight and loosely coupled way.
 
-`cassie-rails` provides Rails integration for the components most applications need to work with a Cassandra persistence layer:
-
-* Database configuration and efficient session management
-* Versioned schema migrations
-* Query classes
-* Test harnessing
+`cassie-rails` provides Rails integration for `cassie` application support. See the cassie readme for information on general usage
 
 ### Installation
 
@@ -22,15 +17,13 @@ $ gem install cassie-rails --pre
 
 ### Database Configuration
 
-Cassie provies database connection configuration (e.g. cluster and session) per environment.
-
-Similar to how `config/database.yml` stores your relational databse configuration, `config/cassandra.yml` stores your cassandra database configuration.
+Similar to how `config/database.yml` stores relational databse configuration, `config/cassandra.yml` stores cassandra database configuration.
 
 ```
 rails g cassandra:config
 ```
 
-This will create `config/cassandra.yml` with default settings.
+This will create `config/cassandra.yml` with default settings. All cluster and session [configuration options from `cassandra-driver`]() are supported (`hosts`, `port`, and `keyspace` shown below).
 
 ```yml
 development:
@@ -40,30 +33,6 @@ development:
   keyspace: my_app_development
 ```
 
-Configure the options for each of your application's environments.
+Configure the options for each application environment.
 
 See the cassie readme for more information on [Database Configuration](https://github.com/eprothro/cassie#database-configuration)
-
-### Session Management
-
-Essence of rails specific features/usage.
-
-See the cassie readme for more information on [Session Management](https://github.com/eprothro/cassie#database-configuration)
-
-### Versioned Migrations
-
-Essence of rails specific features/usage.
-
-See the cassie readme for more information on [Versioned Migrations](https://github.com/eprothro/cassie#versioned-migrations)
-
-### Query Classes
-
-Essence of rails specific features/usage.
-
-See the cassie readme for more information on [Query Classes](https://github.com/eprothro/cassie#query-classes)
-
-### Test Harnessing
-
-Essence of rails specific features/usage.
-
-See the cassie readme for more information on [Test Harnessing](https://github.com/eprothro/cassie#test-harnessing)
