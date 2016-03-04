@@ -6,5 +6,9 @@ module CassieRails
         require file
       end
     end
+
+    initializer "cassie-rails.set_env" do
+      Cassie.env = Rails.env
+    end
   end
 end

@@ -3,9 +3,9 @@ module Cassandra
 
     def create_config
       if File.exist?(config_file_path)
-        puts yellow("[skip] 'config/cassandra.yml' already exists")
+        puts yellow("[skip] '#{file}' already exists")
       else
-        puts green("[new] creating 'config/cassandra.yml'")
+        puts green("[new] creating '#{file}'")
 
         opts = {
           app_name: app_name,
@@ -20,6 +20,14 @@ module Cassandra
     end
 
     private
+
+    def config_file_path
+      File.expand_path(file)
+    end
+
+    def file
+      'config/cassandra.yml'
+    end
 
     def app_name
       if defined?(Rails) && Rails.respond_to?(:application)
@@ -41,8 +49,6 @@ module Cassandra
       colorize(33, message)
     end
 
-    def config_file_path
-      File.expand_path('config/cassandra.yml')
-    end
+
   end
 end

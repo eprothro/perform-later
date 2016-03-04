@@ -20,7 +20,7 @@ $ gem install cassie-rails --pre
 Similar to how `config/database.yml` stores relational databse configuration, `config/cassandra.yml` stores cassandra database configuration.
 
 ```
-rails g cassandra:config
+$ rails g cassandra:config
 ```
 
 This will create `config/cassandra.yml` with default settings. All cluster and session [configuration options from `cassandra-driver`]() are supported (`hosts`, `port`, and `keyspace` shown below).

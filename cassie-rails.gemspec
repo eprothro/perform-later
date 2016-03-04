@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'cassie-rails'
-  s.version     = '1.0.0.alpha.3'
+  s.version     = '1.0.0.alpha.4'
   s.summary     = "Rails Integration for Apache Cassandra application support"
   s.description = <<-EOS.strip.gsub(/\s+/, ' ')
     cassie-rails provides database configration, versioned migrations,
