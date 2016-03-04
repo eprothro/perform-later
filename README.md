@@ -1,8 +1,6 @@
-# cassie-rails
+# Cassie Rails
 
-This project is in alpha. We're iterating to provide important features in a lightweight and loosely coupled way.
-
-`cassie-rails` provides Rails integration for `cassie` application support. See the cassie readme for information on general usage
+`cassie-rails` provides Rails integration for [`cassie`](https://github.com/eprothro/cassie) application support. See the cassie readme for information on general usage.
 
 ### Installation
 
@@ -33,6 +31,10 @@ development:
   keyspace: my_app_development
 ```
 
-Configure the options for each application environment.
+Configure the cluster options for each application environment.
 
-See the cassie readme for more information on [Database Configuration](https://github.com/eprothro/cassie#database-configuration)
+See the cassie readme for more information on [Configuration](https://github.com/eprothro/cassie#database-configuration) and [Connection Handling](https://github.com/eprothro/cassie#connection-handling).
+
+### Env Configuration
+
+`cassie-rails` sets `Cassie::env` to the value in `Rails.env` upon Rails initialization.
