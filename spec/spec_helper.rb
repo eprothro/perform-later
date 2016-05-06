@@ -16,9 +16,8 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-require 'cassie-rails'
-require 'cassie/testing'
-require 'pry-rails'
+require 'perform-later'
+require 'sidekiq/testing/inline'
 require 'byebug'
 
 RSpec.configure do |config|
