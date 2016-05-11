@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'perform-later'
-  s.version     = '1.0.0.alpha.1'
+  s.version     = '1.0.0.alpha.4'
   s.summary     = "Sidekiq support for ruby objects that encourages objected oriented design"
   s.description = <<-EOS.strip.gsub(/\s+/, ' ')
     perform-later provides asyncronous worker/job support for objects with a convention that encourages better object oriented design.
@@ -13,7 +13,10 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/eprothro/perform-later'
   s.license     = 'MIT'
 
-  s.add_dependency 'sidekiq', '~> 3.0'
+  s.required_ruby_version = '>= 2.2.0'
+
+
+  s.add_dependency 'sidekiq', '>= 3.0'
 
   s.add_development_dependency 'rspec', '~> 3.4'
   s.add_development_dependency 'generator_spec', '~> 0.9'

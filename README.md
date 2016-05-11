@@ -13,7 +13,7 @@ It helps encourage objects with async/job/worker behavior that are more maintain
 
 ```ruby
 # Gemfile
-gem 'perform-later', '~> 1.0.0.alpha'
+gem "perform-later", "~> 1.0.0.alpha"
 ```
 or
 ```bash
@@ -82,7 +82,7 @@ end
 In this trivial example, maybe this coupling is not so evil. However as behavior evolves, or for more complex behaviors, this can tend to lead to:
 
   * WET code, as logic is copied into a worker class when it is time to be executed asyncronously
-  * Diffult to maintain classes, as they are usually too coupled to asyncronous context, and don't tend to follow good object oriented design
+  * Diffult to maintain classes, as they are usually too coupled to asyncronous context, and don"t tend to follow good object oriented design
   * poor tests, as logic is coupled with initialization, more procedural, and less object oriented
   * slow tests, as each and every algorithm test may be coupled to the persistence layer
 
