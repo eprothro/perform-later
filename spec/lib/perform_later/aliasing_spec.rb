@@ -19,10 +19,23 @@ RSpec.describe PerformLater::Aliasing do
     end
 
     context "when serialization hook exists" do
-      let(:klass){ DoWorkWithSerializationTester }
+      let(:klass) do
+        class DoWorkWithSerializationTester
+          def self.serialize(a, b)
+            [a.hash, b.hash]
+          end
+        end
+        DoWorkWithSerializationTester
+      end
+      let(:serialized_params){ params.map(&:hash) }
 
       it "calls hook" do
         expect(klass).to receive(:serialize).with(*params)
+        klass.do_work_later(*params)
+      end
+
+      it "passes serialized params to perform_async" do
+        expect(klass).to receive(:perform_async).with(:do_work, *serialized_params)
         klass.do_work_later(*params)
       end
     end
