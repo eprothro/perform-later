@@ -9,7 +9,7 @@ module PerformLater
         # through an asyncronous bus.
         #
         # example:
-        #   { :do_work => {after_initialize: :setup_from_async}}
+        #   { :do_work => {after_deserialize: :setup_from_async}}
         #
         # note: sidekiq has implementation of class_attribute
         class_attribute :perform_later_configs
@@ -27,7 +27,7 @@ module PerformLater
     #      def do_work
     #      end
     #
-    #      perform_later :do_work, after_initialize: :setup_from_async
+    #      perform_later :do_work, after_deserialize: :setup_from_async
     #
     #      private
     #
@@ -40,9 +40,22 @@ module PerformLater
       self.perform_later_configs[method.to_s] = opts
 
       define_singleton_method "#{method}_later", ->(*args) do
+        args = call_before_serialize(opts[:before_serialize], args)
         perform_async(method, *args)
       end
       singleton_class.send(:alias_method, "#{method}_async", "#{method}_later")
+    end
+
+    private
+
+    def call_before_serialize(call, args)
+      case call
+      when Symbol
+        self.send(call, *args)
+      else
+        # null or unsupported call type, return untouched args
+        args
+      end
     end
   end
 end

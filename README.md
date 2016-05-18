@@ -22,9 +22,26 @@ $ gem install perform-later --pre
 
 ### Usage
 
-Allow a method call to be performed later, with loose coupling to the asyncronous client.
+Perform Later allows a class to add support for making an existing method call to be performed later (e.g. through the out-of-process, asyncronous bus) with a call to `perform_later`.
 
-#### Declaration
+```ruby
+class SomeObject
+  include PerformLater
+
+  perform_later :do_work
+
+  def do_work
+    SomeService.do_work
+  end
+end
+```
+
+```ruby
+SomeObject.do_work_later
+```
+
+The class can declare that some deserialization should happen to put the object in the correct state when executing with data from the asyncronous bus.
+
 ```ruby
 class SomeObject
   include PerformLater
@@ -36,7 +53,7 @@ class SomeObject
     @resource2 = resource2
   end
 
-  perform_later :do_work, after_initialize: :load_from_async
+  perform_later :do_work, after_deserialize: :some_deserialization_for_work
 
   def do_work
     SomeService.do_work(resource1, resource2)
@@ -44,14 +61,12 @@ class SomeObject
 
   private
 
-  def load_from_async(param1, param2)
+  def some_deserialization_for_work(param1, param2)
     @resource1 = SomeResource.find(async_bus_param1)
     @resource2 = SomeOtherResource.find(async_bus_param2)
   end
 end
 ```
-
-#### Invocation
 
 ```ruby
 SomeObject.do_work_later(resource1.id, resource2.id)
@@ -61,9 +76,52 @@ or, use the `_async` alias if you prefer
 SomeObject.do_work_async(resource1.id, resource2.id)
 ```
 
+The class can further decouple from asyncronous implmentation by allow custom serialization to happen before parameters are serialized for the aysncronous bus by the asyncronous client.
+
+```ruby
+class SomeObject
+  include PerformLater
+
+  attr_reader :resource1, :resource2
+
+  def initialize(resource1, resource2)
+    @resource1 = resource1
+    @resource2 = resource2
+  end
+
+  perform_later :do_work, before_serialize: :some_serialization_for_work
+                          after_deserialize: :some_deserialization_for_work,
+
+
+  def do_work
+    SomeService.do_work(resource1, resource2)
+  end
+
+  private
+
+  def self.some_serialization_for_work(resource1, resource2)
+    [resource1.id, resource2.id]
+  end
+
+  def some_deserialization_for_work(param1, param2)
+    @resource1 = SomeResource.find(async_bus_param1)
+    @resource2 = SomeOtherResource.find(async_bus_param2)
+  end
+end
+```
+
+```ruby
+SomeObject.do_work_later(resource1, resource2)
+```
+
+> **Note:**
+>
+> When an object is initialized within the asyncronous process, the class's `initialize` method will receive parameters with `null` values.
+> Paramters to `initialize` do not need to be made optional, but the object must be able to initialize successfully with `null` parameter values.
+
 ### Motivation
 
-Asyncronous libraries (Sidekiq, DelayedJob, ActiveJob, Resque etc) typically couple the algorithm of the behavior being performed, with the loading of state of that object from the asyncronous bus.
+Asyncronous libraries (Sidekiq, DelayedJob, ActiveJob, Resque etc) typically couple the algorithm of the behavior being performed, with serialization and deserialization from the asyncronous bus.
 
 ```ruby
 class SomeTypicalWorker

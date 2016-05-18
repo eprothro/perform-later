@@ -1,7 +1,7 @@
 require 'support/test_classes'
 
 RSpec.describe PerformLater::Aliasing do
-  let(:klass) { DoWorkWithSetupTester }
+  let(:klass) { DoWorkTester }
   let(:object){ klass.new }
 
   describe ".perform_later" do
@@ -17,19 +17,27 @@ RSpec.describe PerformLater::Aliasing do
       expect(klass).to receive(:perform_async).with(:do_work, *params)
       klass.do_work_later(*params)
     end
+
+    context "when serialization hook exists" do
+      let(:klass){ DoWorkWithSerializationTester }
+
+      it "calls hook" do
+        expect(klass).to receive(:serialize).with(*params)
+        klass.do_work_later(*params)
+      end
+    end
   end
 
   describe ".do_work_async" do
     let(:params){ [:baz, :bat] }
 
-    it "calls perform_async(:do_work, *params)" do
-      expect(klass).to receive(:perform_async).with(:do_work, *params)
-      klass.do_work_async(*params)
+    it "aliases perform_async(:do_work, *params)" do
+      expect(klass.method(:do_work_async)).to eq(klass.method(:do_work_later))
     end
   end
 
-  describe "Sidekiq.perform_async" do
-    it "trip through async bus stringifies method symbol" do
+  describe ".perform_async" do
+    it "stringifies method symbol through async bus" do
       method = :foo
       expect_any_instance_of(klass).to receive(:perform).with(method.to_s)
       klass.perform_async(method)

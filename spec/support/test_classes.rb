@@ -12,14 +12,36 @@ class RequiredInitParamsTester
   end
 end
 
-class DoWorkWithSetupTester
+class DoWorkTester
   include PerformLater
 
-  perform_later :do_work, after_initialize: :setup
+  perform_later :do_work
+
+  def do_work; end
+end
+
+class DoWorkWithDeserializationTester
+  include PerformLater
+
+  perform_later :do_work, after_deserialize: :deserialize
 
   def do_work; end
 
   private
 
-  def setup(*args); end
+  def deserialize(*args); end
+end
+
+class DoWorkWithSerializationTester
+  include PerformLater
+
+  perform_later :do_work, before_serialize: :serialize
+
+  def do_work; end
+
+  private
+
+  def self.serialize(*args)
+    args
+  end
 end

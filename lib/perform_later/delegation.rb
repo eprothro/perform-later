@@ -3,14 +3,14 @@ module PerformLater
 
     def perform(method, *args)
       config = perform_later_configs[method] || {}
-      call_after_initialize(config[:after_initialize], *args)
+      call_after_deserialize(config[:after_deserialize], *args)
 
       self.send method
     end
 
     private
 
-    def call_after_initialize(call, *args)
+    def call_after_deserialize(call, *args)
       case call
       when Symbol
         self.send(call, *args)
