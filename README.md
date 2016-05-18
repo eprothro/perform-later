@@ -1,9 +1,9 @@
 # Perform Later
-`perform-later` provides asyncronous worker/job support for objects with a convention that encourages better object oriented design.
+`perform-later` provides asyncronous worker/job support for objects with a convention that encourages good object oriented design.
 
 It is a simple and lightweight adapter that helps decouple job/worker initialization logic from object behavior logic.
 
-It helps encourage objects with async/job/worker behavior that are more maintainable, easier to change, and faster to test thoroughly.
+It helps encourage objects with async/job/worker behavior to be more maintainable, easier to change, and faster to test thoroughly.
 
 ### Requirements
   * `ruby` 2.2 or later
