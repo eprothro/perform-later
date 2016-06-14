@@ -8,6 +8,31 @@ RSpec.describe PerformLater::Aliasing do
     it "adds .do_work_later method" do
       expect(klass).to respond_to(:do_work_later)
     end
+
+    it "aliases perform_async(:do_work, *params)" do
+      expect(klass.method(:do_work_async)).to eq(klass.method(:do_work_later))
+    end
+
+    context "with the :as option" do
+      context "using single method" do
+        let(:klass){ DoWorkWithAsTester}
+
+        it "adds method" do
+          expect(klass).to respond_to(:entry_point_asynchronously)
+        end
+      end
+
+      context "using array of methods" do
+        let(:klass){ DoWorkWithArrayAsTester}
+
+        it "adds first method" do
+          expect(klass).to respond_to(:entry_point_asynchronously)
+        end
+        it "aliases rest of methods" do
+          expect(klass.method(:entry_point_alias_asynchronously)).to eq(klass.method(:entry_point_asynchronously))
+        end
+      end
+    end
   end
 
   describe ".do_work_later" do
@@ -38,14 +63,6 @@ RSpec.describe PerformLater::Aliasing do
         expect(klass).to receive(:perform_async).with(:do_work, *serialized_params)
         klass.do_work_later(*params)
       end
-    end
-  end
-
-  describe ".do_work_async" do
-    let(:params){ [:baz, :bat] }
-
-    it "aliases perform_async(:do_work, *params)" do
-      expect(klass.method(:do_work_async)).to eq(klass.method(:do_work_later))
     end
   end
 

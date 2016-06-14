@@ -37,13 +37,19 @@ module PerformLater
     #      end
     #    end
     def perform_later(method, opts={})
-      self.perform_later_configs[method.to_s] = opts
+      config = opts.clone
+      aliases = Array(config.delete(:as){ ["#{method}_later", "#{method}_async"] })
+      self.perform_later_configs[method.to_s] = config
 
-      define_singleton_method "#{method}_later", ->(*args) do
-        args = call_before_serialize(opts[:before_serialize], args)
+      entry_point = aliases.delete_at(0)
+      define_singleton_method entry_point, ->(*args) do
+        args = call_before_serialize(config[:before_serialize], args)
         perform_async(method, *args)
       end
-      singleton_class.send(:alias_method, "#{method}_async", "#{method}_later")
+
+      aliases.each do | entry_point_alias |
+        singleton_class.send(:alias_method, entry_point_alias, entry_point)
+      end
     end
 
     private

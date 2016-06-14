@@ -116,7 +116,7 @@ SomeObject.do_work_later(resource1, resource2)
 
 > **Note:**
 >
-> When an object is initialized within the asyncronous process, the class's `initialize` method will receive parameters with `null` values.
+> When an object is initialized within the asyncronous process, the class's `initialize` method will receive required parameters with `null` values.
 > Paramters to `initialize` do not need to be made optional, but the object must be able to initialize successfully with `null` parameter values.
 
 ### Motivation
@@ -176,6 +176,32 @@ end
 With this decoupling, future changes are easier to reason about in a object oriented manner. Also, its algorithm and its asyncronous loading logic are now easily tested in isolation.
 
 This library exists simply to simplify and help encourage this decoupled design.
+
+### Advanced Usage
+
+#### Aliasing
+
+You may customize the name of the asyncronous entry point with the `as` option. One use case might be enabling asyncronous execution of methods that don't `raise` when they are unsuccessful. Most asynronous jobs are considered successful unless they raise an exception.
+
+The `:as` option accepts a string, symbol, or array of strings/symbols each of which will act as an alias for the asyncronous entry point.
+
+```ruby
+  perform_later :do_work!, as: :do_work_later
+
+  def do_work
+    do_work!
+  rescue RecordInvalidError
+    false
+  end
+
+  def do_work!
+    #some work that might raise RecordInvalidError
+  end
+```
+
+```
+SomeObject.do_work_later
+```
 
 ### Contributing
 

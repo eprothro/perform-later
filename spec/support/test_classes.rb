@@ -1,5 +1,7 @@
 class EmptyTester
   include PerformLater
+
+  def do_work; end
 end
 
 class RequiredInitParamsTester
@@ -16,6 +18,22 @@ class DoWorkTester
   include PerformLater
 
   perform_later :do_work
+
+  def do_work; end
+end
+
+class DoWorkWithAsTester
+  include PerformLater
+
+  perform_later :do_work, as: 'entry_point_asynchronously'
+
+  def do_work; end
+end
+
+class DoWorkWithArrayAsTester
+  include PerformLater
+
+  perform_later :do_work, as: ['entry_point_asynchronously', :entry_point_alias_asynchronously]
 
   def do_work; end
 end
