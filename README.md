@@ -128,7 +128,7 @@ Including `PerformLater` adds a `logger` attribute. It also logs the job id of t
   # => Rails.logger prints {"job_id": "a7be5c33", "class": "SomeObject", "method":"do_work", "msg": "queued for later execution"} with any tags, etc.
 ```
 
-The `PerformLater::logger` is used, which defaults to `Sidekiq.logger`. It is recommended to set the Sidekiq logger to the application logger for the syncronous process.
+The `PerformLater::logger` is used, which defaults to `Sidekiq.logger`. It is recommended to set the Sidekiq logger to the application logger for the syncronous process, and vice-versa for the asyncronous process.
 
 Rails/Sidekiq Example:
 
