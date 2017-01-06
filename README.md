@@ -76,7 +76,7 @@ or, use the `_async` alias if you prefer
 SomeObject.do_work_async(resource1.id, resource2.id)
 ```
 
-The class can further decouple from asyncronous implmentation by allow custom serialization to happen before parameters are serialized for the aysncronous bus by the asyncronous client.
+The class can further decouple from asyncronous implmentation by allowing custom serialization to happen before parameters are serialized for the aysncronous bus (to be consumed by the asyncronous client).
 
 ```ruby
 class SomeObject
@@ -118,6 +118,39 @@ SomeObject.do_work_later(resource1, resource2)
 >
 > When an object is initialized within the asyncronous process, the class's `initialize` method will receive required parameters with `null` values.
 > Paramters to `initialize` do not need to be made optional, but the object must be able to initialize successfully with `null` parameter values.
+
+### Logging
+
+Including `PerformLater` adds a `logger` attribute. It also logs the job id of the enqueued job at a `debug` level.
+
+```
+  SomeObject.do_work_later
+  # => Rails.logger prints {"job_id": "a7be5c33", "class": "SomeObject", "method":"do_work", "msg": "queued for later execution"} with any tags, etc.
+```
+
+The `PerformLater::logger` is used, which defaults to `Sidekiq.logger`. It is recommended to set the Sidekiq logger to the application logger for the syncronous process.
+
+Rails/Sidekiq Example:
+
+```ruby
+# production.rb
+
+Rails.application.configure do
+
+  # only use one logger, determine based on process running
+  if $PROGRAM_NAME =~ /sidekiq/
+    config.logger = Sidekiq.logger
+  else
+    config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
+    config.log_tags = [ :uuid ]
+
+    Sidekiq.logger = config.logger
+  end
+
+  Rails.logger = config.logger
+```
+
+This makes it easy to tie a job back to a request, among other things.
 
 ### Motivation
 

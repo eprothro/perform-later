@@ -43,6 +43,16 @@ RSpec.describe PerformLater::Aliasing do
       klass.do_work_later(*params)
     end
 
+    it "logs enqueueing as debug" do
+      expect(PerformLater.logger).to receive(:debug).with(a_kind_of(PerformLater::Messages::EnqueuedMessage))
+      klass.do_work_later(*params)
+    end
+
+    it "logs enqueueing with correct attributes" do
+      expect(PerformLater::Messages::EnqueuedMessage).to receive(:new).with(klass, :do_work, /[0-9a-f]*/)
+      klass.do_work_later(*params)
+    end
+
     context "when serialization hook exists" do
       let(:klass) do
         class DoWorkWithSerializationTester
