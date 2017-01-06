@@ -1,6 +1,8 @@
+require_relative "lib/perform_later/version"
+
 Gem::Specification.new do |s|
   s.name        = 'perform-later'
-  s.version     = '1.0.0.alpha.6'
+  s.version     = PerformLater::VERSION
   s.summary     = "Sidekiq support for ruby objects that encourages objected oriented design"
   s.description = <<-EOS.strip.gsub(/\s+/, ' ')
     perform-later provides asyncronous worker/job support for objects with a convention that encourages better object oriented design.
@@ -15,11 +17,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.2.0'
 
-
   s.add_dependency 'sidekiq', '>= 3.0'
 
-  s.add_development_dependency 'rspec', '~> 3.4'
-  s.add_development_dependency 'generator_spec', '~> 0.9'
-  s.add_development_dependency 'byebug', '>= 0'
-  s.add_development_dependency 'benchmark-ips', '>= 0'
+  s.add_development_dependency "bundler", "~> 1.10"
 end

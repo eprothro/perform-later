@@ -44,6 +44,8 @@ RSpec.describe PerformLater::Aliasing do
     end
 
     it "logs enqueueing as debug" do
+      # run once to clear client logging
+      klass.do_work_later(*params)
       expect(PerformLater.logger).to receive(:debug).with(a_kind_of(PerformLater::Messages::EnqueuedMessage))
       klass.do_work_later(*params)
     end
