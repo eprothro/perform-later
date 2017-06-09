@@ -44,9 +44,7 @@ module PerformLater
       entry_point = aliases.delete_at(0)
       define_singleton_method entry_point, ->(*args) do
         args = call_before_serialize(config[:before_serialize], args)
-        perform_async(method, *args).tap do |id|
-          logger.debug(Messages::EnqueuedMessage.new(self, method, id))
-        end
+        perform_async(method, *args).tap { |id| logger.debug(Messages::EnqueuedMessage.new(self, method, id)) }
       end
 
       aliases.each do | entry_point_alias |

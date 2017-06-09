@@ -9,6 +9,8 @@ It helps encourage objects with async/job/worker behavior to be more maintainabl
   * `ruby` 2.2 or later
   * currently `Sidekiq` is the only client supported
 
+`jruby` 9 or later (experimental)
+
 ### Installation
 
 ```ruby
