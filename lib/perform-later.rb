@@ -1,7 +1,7 @@
 require 'sidekiq'
-require_relative 'perform_later/initialization'
-require_relative 'perform_later/aliasing'
-require_relative 'perform_later/logging'
+require_relative 'perform-later/initialization'
+require_relative 'perform-later/aliasing'
+require_relative 'perform-later/logging'
 
 module PerformLater
   def self.included(base)
