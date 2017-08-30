@@ -14,19 +14,19 @@ RSpec.describe PerformLater::Messages::EnqueuedMessage do
 
   describe "attributes" do
     it "exposes the class name" do
-      expect(object[:class]).to eq(worker_class.name)
+      expect(object[:enqueued_class]).to eq(worker_class.name)
     end
     it "exposes the method" do
-      expect(object[:method]).to eq(method)
+      expect(object[:enqueued_method]).to eq(method)
     end
     it "exposes the job id" do
-      expect(object[:job_id]).to eq(id)
+      expect(object[:enqueued_job_id]).to eq(id)
     end
   end
 
   describe "inspect" do
     it "is plainly readable" do
-      expect(object.inspect).to eq "#{worker_class.name}#foo queued for later execution. job_id=#{id}"
+      expect(object.inspect).to eq "#{worker_class.name}#foo queued for later execution. enqueued_job_id=#{id}"
     end
   end
 end

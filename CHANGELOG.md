@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Changed
   - fixup block declarations for jruby support (experimental)
+  - change `EnqueuedMessage` log attributes to not collide with nested job enqueuing
 
 ## 1.0.0
 
