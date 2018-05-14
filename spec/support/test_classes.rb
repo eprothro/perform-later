@@ -4,16 +4,6 @@ class EmptyTester
   def do_work; end
 end
 
-class RequiredInitParamsTester
-  include PerformLater
-
-  attr_reader :foo, :bar
-
-  def initialize(foo, bar)
-    @foo, @bar = foo, bar
-  end
-end
-
 class DoWorkTester
   include PerformLater
 
@@ -40,26 +30,31 @@ end
 
 class DoWorkWithDeserializationTester
   include PerformLater
+  attr_accessor :foo
 
-  perform_later :do_work, after_deserialize: :deserialize
+  perform_later :do_work
 
   def do_work; end
 
-  private
-
-  def deserialize(*args); end
+  module Async
+    def deserialize(arg1)
+      DoWorkWithDeserializationTester.new.tap do |o|
+        o.foo = arg1
+      end
+    end
+  end
 end
 
 class DoWorkWithSerializationTester
   include PerformLater
 
-  perform_later :do_work, before_serialize: :serialize
+  perform_later :do_work
 
   def do_work; end
 
-  private
-
-  def self.serialize(*args)
-    args
+  module Async
+    def serialize(*args)
+      args.map{ |a| a.hash }
+    end
   end
 end
