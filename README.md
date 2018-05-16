@@ -115,9 +115,9 @@ class SomeClass
   end
 
   module Async
-    def deserialize(param1, param2)
-      resource1 = SomeResource.find(async_bus_param1)
-      resource2 = SomeOtherResource.find(async_bus_param2)
+    def deserialize(id1, id2)
+      resource1 = SomeResource.find(id1)
+      resource2 = SomeOtherResource.find(id2)
       SomeClass.new(resource1, resource2)
     end
   end
@@ -160,9 +160,9 @@ class SomeClass
       [resource1.id, resource2.id]
     end
 
-    def deserialize(param1, param2)
-      resource1 = SomeResource.find(async_bus_param1)
-      resource2 = SomeOtherResource.find(async_bus_param2)
+    def deserialize(id1, id2)
+      resource1 = SomeResource.find(id1)
+      resource2 = SomeOtherResource.find(id2)
       SomeClass.new(resource1, resource2)
     end
   end
