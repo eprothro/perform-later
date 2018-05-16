@@ -1,7 +1,7 @@
 # Perform Later
-`perform-later` provides asyncronous worker/job support with a convention that encourages idiomatic class design.
+`perform-later` provides asynchronous worker/job support with a convention that encourages idiomatic class design.
 
-It is a simple and lightweight abstraction that helps decouple asyncronous bus logic from object behavior logic.
+It is a simple and lightweight abstraction that helps decouple asynchronous bus logic from object behavior logic.
 
 It encourages more maintainable async/job/worker code that is easier to change and easier to test thoroughly and quickly.
 
@@ -82,7 +82,7 @@ $ gem install perform-later --pre
 
 ### Usage Details
 
-`PerformLater` adds support for making an existing method call asyncronously (e.g. through the out-of-process, asyncronous bus) with a call to `perform_later`.
+`PerformLater` adds support for making an existing method call asynchronously (e.g. through the out-of-process, asynchronous bus) with a call to `perform_later`.
 
 ```ruby
 class SomeClass
@@ -99,7 +99,7 @@ end
 SomeClass.do_work_later
 ```
 
-The class can declare that some deserialization should happen to put the object in the correct state when executing with data from the asyncronous bus.
+The class can declare that some deserialization should happen to put the object in the correct state when executing with data from the asynchronous bus.
 
 ```ruby
 class SomeClass
@@ -139,7 +139,7 @@ or, use the `Async` class method
 SomeClass::Async.do_work(resource1.id, resource2.id)
 ```
 
-The class can further decouple from asyncronous implmentation by explicitly defining the serialization behavior within the Async module, instead having it implicitly defined separately by each caller.
+The class can further decouple from asynchronous implmentation by explicitly defining the serialization behavior within the Async module, instead having it implicitly defined separately by each caller.
 
 ```ruby
 class SomeClass
@@ -178,14 +178,16 @@ SomeClass.do_work_later(resource1, resource2)
 
 ### Logging
 
-Including `PerformLater` adds a `logger` attribute. It also logs the job id of the enqueued job at a `debug` level.
+Including `PerformLater` adds a `logger` class and instance method to your class. It also logs the job id of the enqueued job at a `debug` level.
 
 ```
   SomeClass.do_work_later
-  # => Rails.logger prints {"job_id": "a7be5c33", "class": "SomeClass", "method":"do_work", "msg": "queued for later execution"} with any tags, etc.
+  # => {"job_id": "a7be5c33", "class": "SomeClass", "method":"do_work", "msg": "queued for later execution"}
 ```
 
-The `PerformLater::logger` is used, which defaults to `Sidekiq.logger`. It is recommended to set the Sidekiq logger to the application logger for the syncronous process, and vice-versa for the asyncronous process.
+This includes any tags defined with TaggedLogger.
+
+The `PerformLater::logger` is used, which defaults to `Sidekiq.logger`. It is recommended to set the Sidekiq logger to the application logger for the synchronous process, and vice-versa for the asynchronous process.
 
 Rails/Sidekiq Example:
 
@@ -214,9 +216,9 @@ This makes it easy to tie a job back to a request, among other things.
 
 #### Aliasing
 
-You may customize the name of the asyncronous entry point with the `as` option. One use case might be enabling asyncronous execution of methods that don't `raise` when they are unsuccessful. Most asynronous jobs are considered successful unless they raise an exception.
+You may customize the name of the asynchronous entry point with the `as` option. One use case might be enabling asynchronous execution of methods that don't `raise` when they are unsuccessful. Most asynronous jobs are considered successful unless they raise an exception.
 
-The `:as` option accepts a string, symbol, or array of strings/symbols each of which will act as an alias for the asyncronous entry point.
+The `:as` option accepts a string, symbol, or array of strings/symbols each of which will act as an alias for the asynchronous entry point.
 
 ```ruby
   perform_later :do_work!, as: :do_work_later
@@ -245,11 +247,11 @@ Calling `perform_later :do_work` defines
     * default implemenation for `Async.deserialize` returning `UserClass.new()`
   * a `Proxy` class on the `Async` module
   * a `do_work` class method on the `Proxy` class
-    * calls the asyncronous client
+    * calls the asynchronous client
   * a `do_work_later` class method on the caller (`UserClass`)
     * delegates to `Proxy.do_work`
 
-The asyncronous client's entry point is this `UserClass::Async::Proxy` class.
+The asynchronous client's entry point is this `UserClass::Async::Proxy` class.
 
 When enqueuing, the proxy class calls `UserClass::Async.serialize` to determine what parameters to place in the async bus, along with the method being proxied.
 
