@@ -72,7 +72,7 @@ SomeClass.do_work_later(resource)
 
 ```ruby
 # Gemfile
-gem "perform-later", "~> 1.0.0.alpha"
+gem "perform-later", "~> 1.1.0.alpha"
 ```
 or
 ```bash
