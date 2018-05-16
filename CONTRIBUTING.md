@@ -43,8 +43,8 @@ Or you may want to reference your changes from another project:
 Run `rake release` to:
 * Run the full test suite
 * Build the gem
+* Tag the release
 * Publish the gem
-* Bump the version (patch)
 
 ### Bumping the version
 
