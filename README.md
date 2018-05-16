@@ -35,6 +35,7 @@ DoWorkWorker.perform_later(resource.id)
 ```ruby
 # lib/my-app/some_class.rb
 class SomeClass
+  include PerformLater
   perform_later :do_work
 
   def initialize(resource)
@@ -72,7 +73,7 @@ SomeClass.do_work_later(resource)
 
 ```ruby
 # Gemfile
-gem "perform-later", "~> 1.1.0.a"
+gem "perform-later", "~> 1.1.1.a"
 ```
 or
 ```bash
@@ -85,6 +86,7 @@ $ gem install perform-later --pre
 
 ```ruby
 class SomeClass
+  include PerformLater
   perform_later :do_work
 
   def do_work
@@ -101,6 +103,7 @@ The class can declare that some deserialization should happen to put the object 
 
 ```ruby
 class SomeClass
+  include PerformLater
   attr_reader :resource1, :resource2
 
   def initialize(resource1, resource2)
