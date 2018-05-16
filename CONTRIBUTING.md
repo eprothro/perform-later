@@ -41,7 +41,7 @@ Or you may want to reference your changes from another project:
 ### Releasing (maintainers only)
 
 Run `rake release` to:
-* Run the full test suite (Cassandra running locally requried)
+* Run the full test suite
 * Build the gem
 * Publish the gem
 * Bump the version (patch)
