@@ -246,18 +246,20 @@ Calling `perform_later :do_work` defines
     * default implemenation for `Async.serialize` returning `nil`
     * default implemenation for `Async.deserialize` returning `UserClass.new()`
   * a `Proxy` class on the `Async` module
-  * a `do_work` class method on the `Proxy` class
-    * calls the asynchronous client
+  * a `do_work` class method on the `Async` class
+    * delegates to `Proxy.perform_later`, which calls the asynchronous client
   * a `do_work_later` class method on the caller (`UserClass`)
-    * delegates to `Proxy.do_work`
+    * delegates to `Async.do_work`
 
-The asynchronous client's entry point is this `UserClass::Async::Proxy` class.
+The asynchronous client's entry point is this `UserClass::Async::Proxy` class, which proxies the method call to the deserialized object.
 
 When enqueuing, the proxy class calls `UserClass::Async.serialize` to determine what parameters to place in the async bus, along with the method being proxied.
 
 Upon dequeuing, this proxy object calls `UserClass::Async.deserialize` to determine what object will receive the proxied message.
 
+<!--- https://draw.io diagram whose source is embedded in the png -->
 ![Sequence Diagram](documentation/images/draw_io_sequence_diagram.png)
+
 
 ### Contributing
 
